@@ -11,7 +11,7 @@ public func closeTo(expectedValue: Double, delta: Double) -> Matcher<Double> {
 }
 
 public func closeTo(expectedValue: Float, delta: Double) -> Matcher<Float> {
-    let matcher = closeTo(Double(expectedValue), Double(delta))
+    let matcher = closeTo(Double(expectedValue), delta: Double(delta))
     return Matcher(matcher.description) {matcher.matches(Double($0))}
 }
 

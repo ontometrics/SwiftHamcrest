@@ -5,7 +5,7 @@ import XCTest
 /// Reporter function that is called whenever a Hamcrest assertion fails.
 /// By default this calls XCTFail, except in Playgrounds where it does nothing.
 /// This is intended for testing Hamcrest itself.
-public var HamcrestReportFunction: (_: String, file: String, line: UInt) -> () = HamcrestDefaultReportFunction
+public var HamcrestReportFunction: (_: String, file: StaticString, line: UInt) -> () = HamcrestDefaultReportFunction
 public let HamcrestDefaultReportFunction =
     isPlayground()
         ? {(message, file, line) in}
@@ -27,32 +27,32 @@ func delegateMatching<T>(value: T, matcher: Matcher<T>, mismatchDescriber: Strin
 }
 
 func equalToWithoutDescription<T: Equatable>(expectedValue: T) -> Matcher<T> {
-    return describedAs(describe(expectedValue), equalTo(expectedValue))
+    return describedAs(describe(expectedValue), matcher: equalTo(expectedValue))
 }
 
 func isPlayground() -> Bool {
-    let bundleIdentifier: AnyObject? = NSBundle.mainBundle().infoDictionary["CFBundleIdentifier"]
+    let bundleIdentifier: AnyObject? = NSBundle.mainBundle().infoDictionary!["CFBundleIdentifier"]
     return (bundleIdentifier as? String)?.hasPrefix("com.apple.dt.playground.stub") ?? false
 }
 
 // MARK: assertThat
 
 public func assertThat<T>(value: T, matcher: Matcher<T>,
-                          file: String = __FILE__, line: UInt = __LINE__) -> String {
+                          file: StaticString = #file, line: UInt = #line) -> String {
     return reportResult(applyMatcher(matcher, toValue: value), file: file, line: line)
 }
 
-func applyMatcher<T>(matcher: Matcher<T>, # toValue: T) -> String? {
+func applyMatcher<T>(matcher: Matcher<T>, toValue: T) -> String? {
     let match = matcher.matches(toValue)
     switch match {
     case .Match:
         return nil
     case let .Mismatch(mismatchDescription):
-        return describeMismatch(toValue, matcher.description, mismatchDescription)
+        return describeMismatch(toValue, description: matcher.description, mismatchDescription: mismatchDescription)
     }
 }
 
-func reportResult(possibleResult: String?, file: String = __FILE__, line: UInt = __LINE__)
+func reportResult(possibleResult: String?, file: StaticString = #file, line: UInt = #line)
     -> String {
 
     if let result = possibleResult {

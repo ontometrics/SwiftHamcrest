@@ -15,7 +15,7 @@ public func allOf<T>(matchers: Matcher<T>...) -> Matcher<T> {
         (value: T) -> MatchResult in
         var mismatchDescriptions: [String?] = []
         for matcher in matchers {
-            switch delegateMatching(value, matcher, {
+            switch delegateMatching(value, matcher: matcher, mismatchDescriber: {
                 (mismatchDescription: String?) -> String? in
                 "mismatch: \(matcher.description)"
                     + (mismatchDescription != nil ? " (\(mismatchDescription!))" : "")

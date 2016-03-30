@@ -2,6 +2,10 @@ public enum MatchResult: BooleanLiteralConvertible, BooleanType {
 
     case Match
     case Mismatch(String?)
+    
+    public init(booleanLiteral value: BooleanLiteralType) {
+        self = value ? .Match : .Mismatch(nil)
+    }
 
     public init(_ match: Bool) {
         self = match ? .Match : .Mismatch(nil)

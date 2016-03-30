@@ -7,15 +7,15 @@ func describe<T>(value: T) -> String {
     if let string = value as? String {
         return "\"\(string)\""
     }
-    return toString(value)
+    return String(value)
 }
 
 func describeAddress<T: AnyObject>(object: T) -> String {
-    return NSString(format: "%p", unsafeBitCast(object, Int.self))
+    return String(format: "%p", unsafeBitCast(object, Int.self))
 }
 
 func describeMismatch<T>(value: T, description: String, mismatchDescription: String?) -> String {
-    return "GOT: " + describeActualValue(value, mismatchDescription) + ", EXPECTED: \(description)"
+    return "GOT: " + describeActualValue(value, mismatchDescription: mismatchDescription) + ", EXPECTED: \(description)"
 }
 
 func describeActualValue<T>(value: T, mismatchDescription: String?) -> String {
@@ -46,6 +46,6 @@ private func joinStrings(strings: [String]) -> String {
     case 1:
         return strings[0]
     default:
-        return "[" + join(", ", strings) + "]"
+        return "[" + strings.joinWithSeparator(", ") + "]"
     }
 }

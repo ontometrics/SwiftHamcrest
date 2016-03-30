@@ -16,11 +16,11 @@ public func hasEntry<K: Hashable, V>(keyMatcher: Matcher<K>, valueMatcher: Match
 public func hasEntry<K: Equatable, V: Equatable where K: Hashable>(expectedKey: K, expectedValue: V)
     -> Matcher<Dictionary<K, V>> {
 
-        return hasEntry(equalToWithoutDescription(expectedKey), equalToWithoutDescription(expectedValue))
+        return hasEntry(equalToWithoutDescription(expectedKey), valueMatcher: equalToWithoutDescription(expectedValue))
 }
 
 public func hasKey<K: Hashable, V>(matcher: Matcher<K>) -> Matcher<Dictionary<K, V>> {
-    return hasEntry(matcher, anything())
+    return hasEntry(matcher, valueMatcher: anything())
 }
 
 public func hasKey<K, V where K: Equatable, K: Hashable>(expectedKey: K)
@@ -30,7 +30,7 @@ public func hasKey<K, V where K: Equatable, K: Hashable>(expectedKey: K)
 }
 
 public func hasValue<K: Hashable, V>(matcher: Matcher<V>) -> Matcher<Dictionary<K, V>> {
-    return hasEntry(anything(), matcher)
+    return hasEntry(anything(), valueMatcher: matcher)
 }
 
 public func hasValue<K: Hashable, V: Equatable>(expectedValue: V) -> Matcher<Dictionary<K, V>> {
