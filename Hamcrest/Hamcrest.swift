@@ -37,7 +37,7 @@ func isPlayground() -> Bool {
 
 // MARK: assertThat
 
-public func assertThat<T>(value: T, matcher: Matcher<T>,
+public func assertThat<T>(value: T, _ matcher: Matcher<T>,
                           file: StaticString = #file, line: UInt = #line) -> String {
     return reportResult(applyMatcher(matcher, toValue: value), file: file, line: line)
 }
